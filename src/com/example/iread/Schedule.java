@@ -53,6 +53,76 @@ public class Schedule extends DBMS
 		return id;
 	}
 	
+	public int get_schedule_id()
+	{
+		return schedule_id;
+	}
+	
+	public int get_belong_to_id()
+	{
+		return belong_to_id;
+	}
+	
+	public int get_start_page()
+	{
+		return start_page;
+	}
+	
+	public int get_end_page()
+	{
+		return end_page;
+	}
+	
+	public int get_read_page()
+	{
+		return read_page;
+	}
+	
+	public String get_start_time()
+	{
+		return start_time;
+	}
+	
+	public String get_end_time()
+	{
+		return end_time;
+	}
+	
+	public void set_schedule_id(int id)
+	{
+		schedule_id=id;
+	}
+	
+	public void set_belong_to_id(int id)
+	{
+		belong_to_id=id;
+	}
+	
+	public void set_start_page(int page)
+	{
+		start_page=page;
+	}
+	
+	public void set_end_page(int page)
+	{
+		end_page=page;
+	}
+	
+	public void set_read_page(int page)
+	{
+		read_page=page;
+	}
+	
+	public void set_start_time(String time)
+	{
+		start_time=time;
+	}
+	
+	public void set_end_time(String time)
+	{
+		end_time=time;
+	}
+	
 	public void updata_belong_to_id(int id,int book_id)
 	{
 		String Update_cmd="update "+table_name+" set "+"belong_to_id="+book_id+" where schedule_id="+id;

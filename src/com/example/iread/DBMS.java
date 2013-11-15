@@ -14,7 +14,10 @@ public class DBMS extends SQLiteOpenHelper
 	
 	public void onCreate(SQLiteDatabase db)
 	{
-		String Create_Table_Book;
+		String Create_Table_Book="create table book(book_id int,book_name varchar(50),isbn10 varchar(10)," +
+				"isbn13 varchar(13),title varchar(30),origin_title varchar(30),subtitle varchar(30),"+
+				"image varchar(50),author varchar(30),translator varchar(30),publisher varchar(30),"+
+				"pubdate varchar(30),price double,pages int,summary varchar(1000),primary key(book_id))";
 		String Cretae_Table_ReadLog;
 		
 		this.db=db;

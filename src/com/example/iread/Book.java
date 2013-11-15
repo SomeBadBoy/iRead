@@ -13,13 +13,12 @@ public class Book extends DBMS
 	}
 	
 	public void insert(int book_id,String book_name,String isbn10,String isbn13,String title,String origin_title,
-			String subtitle,String images_small,String images_middle,String images_large,String author,
-			String translator,String publisher,String pubdate,double price,int pages,String summary)
+			String subtitle,String image,String author,String translator,String publisher,String pubdate,
+			double price,int pages,String summary)
 	{
 		String Insert_cmd="insert into "+table_name+" values("+book_id+",'"+book_name+"','"+isbn10+"','"+
-				isbn13+"','"+title+"','"+origin_title+"','"+subtitle+"','"+images_small+"','"+images_middle+
-				"','"+images_large+"','"+author+"','"+translator+"','"+publisher+"','"+pubdate+"',"+price+","+
-				pages+",'"+summary+"')";
+				isbn13+"','"+title+"','"+origin_title+"','"+subtitle+"','"+image+"','"+author+"','"+
+				translator+"','"+publisher+"','"+pubdate+"',"+price+","+pages+",'"+summary+"')";
 		
 		Exec(Insert_cmd);
 	}
@@ -35,9 +34,7 @@ public class Book extends DBMS
 		this.title=c.getString(c.getColumnIndex("title"));
 		this.origin_title=c.getString(c.getColumnIndex("origin_title"));
 		this.subtitle=c.getString(c.getColumnIndex("subtitle"));
-		this.images_small=c.getString(c.getColumnIndex("images_small"));
-		this.images_middle=c.getString(c.getColumnIndex("images_middle"));
-		this.images_large=c.getString(c.getColumnIndex("images_large"));
+		this.image=c.getString(c.getColumnIndex("images_small"));
 		this.author=c.getString(c.getColumnIndex("author"));
 		this.translator=c.getString(c.getColumnIndex("translator"));
 		this.publisher=c.getString(c.getColumnIndex("publisher"));
@@ -77,6 +74,156 @@ public class Book extends DBMS
 		return id;
 	}
 	
+	public int get_id()
+	{
+		return book_id;
+	}
+	
+	public String get_bookname()
+	{
+		return book_name;
+	}
+	
+	public String get_isbn10()
+	{
+		return isbn10;
+	}
+	
+	public String get_isbn13()
+	{
+		return isbn13;
+	}
+	
+	public String get_title()
+	{
+		return title;
+	}
+	
+	public String get_origin_title()
+	{
+		return origin_title;
+	}
+	
+	public String get_subtitle()
+	{
+		return subtitle;
+	}
+	
+	public String get_image()
+	{
+		return image;
+	}
+	
+	public String get_author()
+	{
+		return author;
+	}
+	
+	public String get_translator()
+	{
+		return translator;
+	}
+	
+	public String get_publisher()
+	{
+		return publisher;
+	}
+	
+	public String get_pubdate()
+	{
+		return pubdate;
+	}
+	
+	public double get_price()
+	{
+		return price;
+	}
+	
+	public int get_pages()
+	{
+		return pages;
+	}
+	
+	public String get_summary()
+	{
+		return summary;
+	}
+	
+	public void set_id(int id)
+	{
+		book_id=id;
+	}
+	
+	public void set_bookname(String name)
+	{
+		book_name=name;
+	}
+	
+	public void set_isbn10(String isbn)
+	{
+		isbn10=isbn;
+	}
+	
+	public void set_isbn13(String isbn)
+	{
+		isbn13=isbn;
+	}
+	
+	public void get_title(String book_title)
+	{
+		title=book_title;
+	}
+	
+	public void set_origin_title(String title)
+	{
+		origin_title=title;
+	}
+	
+	public void get_subtitle(String title)
+	{
+		subtitle=title;
+	}
+	
+	public void get_image(String images)
+	{
+		image=images;
+	}
+	
+	public void get_author(String Author)
+	{
+		author=Author;
+	}
+	
+	public void get_translator(String Translator)
+	{
+		translator=Translator;
+	}
+	
+	public void get_publisher(String Publisher)
+	{
+		publisher=Publisher;
+	}
+	
+	public void get_pubdate(String date)
+	{
+		pubdate=date;
+	}
+	
+	public void get_price(double Price)
+	{
+		price=Price;
+	}
+	
+	public void get_pages(int page)
+	{
+		pages=page;
+	}
+	
+	public void get_summary(String Summary)
+	{
+		summary=Summary;
+	}
+	
 	public void updata_bookname(int id,String name)
 	{
 		String Update_cmd="update "+table_name+" set "+"book_name="+name+" where book_id="+id;
@@ -107,21 +254,9 @@ public class Book extends DBMS
 		Exec(Update_cmd);
 	}
 	
-	public void updata_images_small(int id,String image_s)
+	public void updata_image(int id,String image)
 	{
-		String Update_cmd="update "+table_name+" set "+"images_small="+image_s+" where book_id="+id;
-		Exec(Update_cmd);
-	}
-	
-	public void updata_images_middle(int id,String image_m)
-	{
-		String Update_cmd="update "+table_name+" set "+"images_middle="+image_m+" where book_id="+id;
-		Exec(Update_cmd);
-	}
-	
-	public void updata_images_large(int id,String image_l)
-	{
-		String Update_cmd="update "+table_name+" set "+"image_large="+image_l+" where book_id="+id;
+		String Update_cmd="update "+table_name+" set "+"images_small="+image+" where book_id="+id;
 		Exec(Update_cmd);
 	}
 	
@@ -169,8 +304,8 @@ public class Book extends DBMS
 	
 	private final String table_name="book";
 	private String table_attr="book_id,book_name,isbn10,isbn13,title,"+
-				"origin_title,subtitle,images_small,images_middle,images_large,"+
-				"author,translator,publisher,pubdate,price,pages,summary";
+				"origin_title,subtitle,image,author,translator,publisher,"+
+				"pubdate,price,pages,summary";
 
 	private int book_id;
 	private String book_name;
@@ -179,9 +314,7 @@ public class Book extends DBMS
 	private String title;
 	private String origin_title;
 	private String subtitle;
-	private String images_small;
-	private String images_middle;
-	private String images_large;
+	private String image;
 	private String author;
 	private String translator;
 	private String publisher;

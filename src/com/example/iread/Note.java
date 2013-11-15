@@ -50,6 +50,66 @@ public class Note extends DBMS
 		return id;
 	}
 	
+	public int get_note_id()
+	{
+		return note_id;
+	}
+	
+	public int get_belong_to_id()
+	{
+		return belong_to_id;
+	}
+	
+	public String get_title()
+	{
+		return title;
+	}
+	
+	public String get_comment()
+	{
+		return comment;
+	}
+	
+	public int get_score()
+	{
+		return score;
+	}
+	
+	public int get_shared()
+	{
+		return shared;
+	}
+	
+	public void set_note_id(int id)
+	{
+		note_id=id;
+	}
+	
+	public void set_belong_to_id(int id)
+	{
+		belong_to_id=id;
+	}
+	
+	public void set_title(String Title)
+	{
+		title=Title;
+	}
+	
+	public void set_comment(String Comment)
+	{
+		comment=Comment;
+	}
+	
+	public void set_score(int Score)
+	{
+		score=Score;
+	}
+	
+	public void set_shared(int Shared)
+	{
+		shared=Shared;
+	}
+	
 	public void updata_belong_to_id(int id,int schedule_id)
 	{
 		String Update_cmd="update "+table_name+" set "+"belong_to_id="+schedule_id+" where note_id="+id;
