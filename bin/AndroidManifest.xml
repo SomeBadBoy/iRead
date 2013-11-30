@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.iread"
+    package="com.hitiread.view"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
-
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_PROFILE" />
+	<uses-permission android:name="android.permission.READ_PROFILE"/>
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-feature android:name="android.hardware.camera" />
+	<uses-feature android:name="android.hardware.camera.autofocus" />
+	<uses-permission android:name="android.permission.VIBRATE"/>
+  	<uses-permission android:name="android.permission.FLASHLIGHT"/>
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.iread.MainActivity"
+            android:name="com.hitiread.view.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +32,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.iread.BookStore"
+            android:name="com.hitiread.entity.BookStore"
             android:label="@string/book_store" >
         </activity>
+        <activity
+            android:name="com.hitiread.view.Classify"
+            android:label="@string/classify" >
+        </activity>
+        <activity
+            android:name="com.hitwwq.scanner.ScanAdd"
+            android:label="@string/classify" >
+        </activity>
+        <activity
+            android:name="com.hitiread.view.BookView"
+            android:label="@string/classify" >
+        </activity>
+        <activity
+            android:name="com.hitwwq.scanner.ScannerActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/scan" >
+        </activity>
     </application>
-
 </manifest>

@@ -3,8 +3,28 @@
 
     <string name="app_name">iRead</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="book_store">BookStore</string>
     <string name="addbutton">添加</string>
-
+    <string name="store_title">书库</string>
+    <string name="search">搜索</string>
+    <string name="search_hint">请输入书名</string>
+    <string name="scan_add">扫描添加</string>
+    <string name="classify">分类</string>
+	<string name="progress">查询进度</string>
+    <string name="interest">兴趣分析</string>
+    <string name="bookname">《书名》</string>
+    <string name="endpage">结束页码</string>
+    <string name="readtime">阅读时间</string>
+	<string name="contenttitle">标题</string>
+	<string name="readcontent">阅读随笔</string>
+	<string name="all_readtime">1時23分45秒</string>
+	<string name="scan_hint">请输入ISBN号</string>
+	<string name="ok">确定</string>
+	<string name="isbn_hint">输入9或13位ISBN号</string>
+	<string name="cancel">取消</string>
+	<string name="bookinfo">图书信息</string>
+	<string name="scan">扫描</string>
+	<string name="read_start">开始阅读</string>
+	<string name="page_start">起始页码</string>
+    
 </resources>

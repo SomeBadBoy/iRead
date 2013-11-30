@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".BookStore" >
+    tools:context=".Classify" >
 
     <ListView
         android:id="@+id/booklist"
@@ -19,41 +19,22 @@
     </ListView>
 
     <TextView
-        android:id="@+id/store_text"
+        android:id="@+id/classify_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/booklist"
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
         android:textSize="14pt"
-        android:text="@string/store_title" />
+        android:text="@string/classify" />
 
     <Button
-        android:id="@+id/search_btn"
-        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/classify_add_button"
+        style="?android:attr/buttonStyleToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/store_text"
+        android:layout_alignBottom="@+id/classify_text"
         android:layout_alignParentRight="true"
-        android:text="@string/search" />
-
-   <EditText 
-       	android:id="@+id/temp"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:inputType="text" >
-   </EditText>
-   
-   <EditText
-        android:id="@+id/inputbook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/search_btn"
-        android:layout_toLeftOf="@+id/search_btn"
-        android:ems="5"
-        android:hint="@string/search_hint"
-        android:inputType="text" >
-
-    </EditText>
+        android:text="@string/addbutton" />
 
 </RelativeLayout>

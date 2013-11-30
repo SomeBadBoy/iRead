@@ -8,18 +8,56 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/scan_add_button"
+        android:layout_alignLeft="@+id/scan_add_button"
+        android:layout_alignParentTop="true" >
+
+    </ListView>
+    
+    <Button
+        android:id="@+id/scan_add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="left"
+        android:text="@string/scan_add" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/progress_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/addbutton" />
+        android:layout_alignLeft="@+id/scan_add_button"
+        android:layout_below="@+id/classify_button"
+        android:gravity="left"
+        android:text="@string/progress" />
+
+    <Button
+        android:id="@+id/interest_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/progress_button"
+        android:layout_alignBottom="@+id/progress_button"
+        android:layout_alignRight="@+id/classify_button"
+        android:gravity="right"
+        android:text="@string/interest" />
+
+    
+
+    <Button
+        android:id="@+id/classify_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/scan_add_button"
+        android:layout_alignBottom="@+id/scan_add_button"
+        android:layout_alignRight="@+id/listView1"
+        android:layout_marginRight="24dp"
+        android:gravity="right"
+        android:text="@string/classify" />
+
 
 </RelativeLayout>
