@@ -2,8 +2,11 @@ package com.hitiread.view;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,7 +30,6 @@ import com.hitwwq.scanner.Util;
 
 public class MainActivity extends Activity
 {
-
 	private Button btn = null;
 	ListView lv;
 	LayoutInflater inflater;
@@ -51,35 +54,87 @@ public class MainActivity extends Activity
 
 		btn = (Button) findViewById(R.id.scan_add_button);
 		btn.setOnClickListener(listener);
-		
+		// 点击阅读
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id)
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id)
 			{
 				// TODO Auto-generated method stub
-				
+				Intent intent = new Intent(getApplicationContext(),
+						StartReading.class);
+				intent.putExtra("ids", array.get(position).getId());
+				startActivity(intent);
+				MainActivity.this.finish();
 			}
 		});
 
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					final int position, long id)
+			{
+				// TODO Auto-generated method stub
+				new AlertDialog.Builder(getApplicationContext())
+						.setTitle("删除")
+						.setMessage("是否删除书籍")
+						.setNegativeButton("取消",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface arg0,
+											int arg1)
+									{
+										// TODO Auto-generated method stub
+
+									}
+								})
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which)
+									{
+										// TODO Auto-generated method stub
+										mdb.toDelete(array.get(position)
+												.getId(), BookInfo.BOOK_INFO);
+										array = mdb.getArray();
+										MyAdapter adapter = new MyAdapter(
+												getLayoutInflater(), array);
+										lv.setAdapter(adapter);
+									}
+								}).create().show();
+				return true;
+			}
+		});
 	}
 
-	private android.view.View.OnClickListener listener = new View.OnClickListener() {
-
+	@SuppressLint("HandlerLeak")
+	private android.view.View.OnClickListener listener = new View.OnClickListener() 
+	{
 		@Override
 		public void onClick(View v)
 		{
 			Button tempbtn = (Button) v;
 			switch (tempbtn.getId()) {
+			case R.id.classify_button:
+				break;
+			
 			case R.id.scan_add_button:
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, ScanAdd.class);
 				startActivityForResult(intent, REQUEST_CODE);
-/*				
-				intent.setClass(MainActivity.this, ScannerActivity.class);
- 				startActivityForResult(intent, REQUEST_CODE);*/
-				handler = new Handler() {
+				/*
+				 * ()) { case R.id.scan_add_butt
+				 * intent.setClass(MainActivity.this, ScannerActivity.class);
+				 * startActivityForResult(intent, REQUEST_CODE);
+				 */
+				handler = new Handler()
+				{
+
 					@Override
 					public void handleMessage(Message msg)
 					{
@@ -102,12 +157,10 @@ public class MainActivity extends Activity
 					}
 				};
 				break;
-
+			
 			default:
 				break;
 			}
-			// TODO Auto-generated method stub
-
 		}
 	};
 

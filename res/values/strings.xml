@@ -26,5 +26,6 @@
 	<string name="scan">扫描</string>
 	<string name="read_start">开始阅读</string>
 	<string name="page_start">起始页码</string>
+	<string name="end_reading">停止阅读</string>
     
 </resources>

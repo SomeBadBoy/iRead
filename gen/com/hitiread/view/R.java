@@ -36,7 +36,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f09001f;
+        public static final int action_settings=0x7f090022;
         public static final int booklist=0x7f090007;
         public static final int bookview=0x7f090013;
         public static final int bookview_author=0x7f09000e;
@@ -46,28 +46,31 @@ public final class R {
         public static final int bookview_publisherdate=0x7f090010;
         public static final int bookview_summary=0x7f090012;
         public static final int bookview_title=0x7f09000c;
-        public static final int cancel_button=0x7f09001c;
+        public static final int cancel_button=0x7f09001f;
         public static final int classify_add_button=0x7f090015;
         public static final int classify_button=0x7f090003;
         public static final int classify_text=0x7f090014;
-        public static final int imageView1=0x7f090017;
+        public static final int endreading=0x7f09001b;
+        public static final int imageView1=0x7f090016;
         public static final int inputbook=0x7f09000b;
         public static final int interest_button=0x7f090004;
-        public static final int isbn_num=0x7f09001a;
+        public static final int isbn_num=0x7f09001d;
         public static final int listView1=0x7f090000;
-        public static final int mainLayout=0x7f09001d;
-        public static final int ok_button=0x7f09001b;
+        public static final int mainLayout=0x7f090020;
+        public static final int ok_button=0x7f09001e;
         public static final int progress_button=0x7f090002;
+        public static final int readingtime=0x7f09001a;
         public static final int scan_add_button=0x7f090001;
-        public static final int scanner_view=0x7f09001e;
-        public static final int scantext=0x7f090019;
+        public static final int scanner_view=0x7f090021;
+        public static final int scantext=0x7f09001c;
         public static final int search_btn=0x7f090009;
-        public static final int start_page=0x7f090018;
-        public static final int start_reading=0x7f090016;
+        public static final int start_page=0x7f090017;
+        public static final int start_reading=0x7f090019;
         public static final int store_text=0x7f090008;
         public static final int temp=0x7f09000a;
         public static final int textView1=0x7f090005;
         public static final int textView2=0x7f090006;
+        public static final int tv1=0x7f090018;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -93,6 +96,7 @@ public final class R {
         public static final int cancel=0x7f060014;
         public static final int classify=0x7f060008;
         public static final int contenttitle=0x7f06000e;
+        public static final int end_reading=0x7f060019;
         public static final int endpage=0x7f06000c;
         public static final int interest=0x7f06000a;
         public static final int isbn_hint=0x7f060013;

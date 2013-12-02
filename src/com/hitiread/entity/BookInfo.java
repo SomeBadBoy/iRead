@@ -10,6 +10,7 @@ import android.os.Parcelable;
 public class BookInfo implements Parcelable
 {
 
+	public final static int BOOK_INFO = 1;
 	private String mTitle;
 	private Bitmap mBitmap;
 	private String mAuthor;
@@ -20,10 +21,6 @@ public class BookInfo implements Parcelable
 	private String mPages;
 	private int ids;
 
-	public BookInfo()
-	{
-		// TODO Auto-generated constructor stub
-	}
 
 	public BookInfo(String title, String author, String publisher,
 			String publishdate, String isbn, String summary, String pages)
@@ -48,6 +45,11 @@ public class BookInfo implements Parcelable
 		mISBN = isbn;
 		mSummary = summary;
 		mPages = pages;
+	}
+
+	public BookInfo()
+	{
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId()

@@ -9,14 +9,6 @@
     android:background="@color/bg"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/start_reading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/read_start" />
-
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="265sp"
@@ -25,38 +17,67 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:contentDescription="@string/all_readtime"
         />
 
     <EditText 
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/start_reading"
-        android:layout_marginBottom="31dp"
-        android:layout_marginRight="21dp"
-        android:layout_toLeftOf="@+id/start_page"
-        android:background="@color/ailan"
-        android:text="@string/page_start"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="0dp"
+        android:inputType="none"/>
 
     <EditText
         android:id="@+id/start_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBaseline="@+id/tv1"
+        android:layout_alignBottom="@+id/tv1"
         android:layout_alignRight="@+id/imageView1"
         android:layout_marginRight="16dp"
         android:background="@color/ailan"
         android:ems="4"
-        android:hint="起始页码"
         android:inputType="number"
         android:textAppearance="?android:attr/textAppearanceLarge" >
 
     </EditText>
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginRight="26dp"
+        android:layout_marginTop="25dp"
+        android:layout_toLeftOf="@+id/start_page"
+        android:background="@color/ailan"
+        android:text="@string/page_start"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/start_reading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/start_page"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/read_start" />
+
+    <TextView
+        android:id="@+id/readingtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_below="@+id/start_reading"
+        android:layout_marginTop="44dp"
+        android:text="00:00:11"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="33sp" />
+
+    <Button
+        android:id="@+id/endreading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/readingtime"
+        android:layout_alignRight="@+id/start_page"
+        android:text="@string/end_reading" />
 
 </RelativeLayout>

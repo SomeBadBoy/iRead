@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
 import com.covics.zxingscanner.OnDecodeCompletionListener;
 import com.covics.zxingscanner.ScannerView;

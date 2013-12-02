@@ -3,11 +3,8 @@ package com.hitwwq.scanner;
 import com.hitiread.view.R;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,8 +19,6 @@ public class ScanAdd extends Activity
 	EditText text;
 	Button okButton;
 	Button cancelButton;
-	private Handler hd;
-	private ProgressDialog mpd;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
