@@ -7,7 +7,6 @@ import java.io.IOException;
 import com.hitiread.view.R;
 import com.hitiread.dbms.MyDataBase;
 import com.hitiread.entity.BookInfo;
-import com.hitiread.entity.ReadProgress;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -72,9 +71,11 @@ public class BookView extends Activity
 		{
 			// TODO Auto-generated method stub
 			myDataBase.toInsert(book);
+/*
 			ReadProgress progress=new ReadProgress(book.getId(),book.getPages());
 			Log.v("reading", progress.getEndPage());
 			myDataBase.toInsert(progress);
+			*/
 			Log.v("bookview", "Onclick");
 			saveBigmap(book);
 			Toast.makeText(getApplicationContext(), "Ìí¼Ó³É¹¦", Toast.LENGTH_LONG)
@@ -85,6 +86,16 @@ public class BookView extends Activity
 			BookView.this.finish();
 		}
 	};
+	
+	public void onBackPressed()
+	{
+		// TODO Auto-generated method stub
+		//super.onBackPressed();
+		Intent anotherIntent = new Intent();
+		anotherIntent.setClass(getApplicationContext(), MainActivity.class);
+		startActivity(anotherIntent);
+		BookView.this.finish();
+	}
 
 	private void saveBigmap(BookInfo book)
 	{

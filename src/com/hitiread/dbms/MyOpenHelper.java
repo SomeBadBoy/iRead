@@ -30,6 +30,8 @@ public class MyOpenHelper extends SQLiteOpenHelper
 				+"publishdate text,"
 				+"summary text,"
 				+"pages text,"
+				+"lastread text,"
+				+"progress text,"
 				+"isbn text)");
 		//table read note
 		db.execSQL("create table readnote("
@@ -37,9 +39,13 @@ public class MyOpenHelper extends SQLiteOpenHelper
 				+"bookid integer,"
 				+"title text,"
 				+"content text,"
-				+"time text,"
+				+"starttime text,"
+				+"endtime text,"
+				+"startpage text,"
+				+"endpage text,"
 				+"share integer)");
 		//table read progress
+		/*
 		db.execSQL("create table readprogress("
 				+"_id integer primary key autoincrement,"
 				+"bookid integer,"
@@ -48,6 +54,7 @@ public class MyOpenHelper extends SQLiteOpenHelper
 				+"totalpage text,"
 				+"starttime text,"
 				+"endtime text)");
+				*/
 		
 	}
 

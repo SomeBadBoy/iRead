@@ -1,14 +1,15 @@
 package com.hitiread.view;
 
-import com.hitiread.dbms.MyDataBase;
-import com.hitiread.entity.BookInfo;
+import java.text.SimpleDateFormat;
 
-import android.R.integer;
+import com.hitiread.dbms.MyDataBase;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,10 +30,10 @@ public class StartReading extends Activity
 	private ImageView image;
 	private MyDataBase myDataBase;
 	private int ids;
-	private BookInfo book;
 	private boolean reading;
-	private String starttime,endtime;
+	private String starttime,endtime,startpage;
 	public final static int SECOND = 1;
+	private long timer = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -46,20 +47,16 @@ public class StartReading extends Activity
 		image = (ImageView) findViewById(R.id.imageView1);
 		readtime=(TextView)findViewById(R.id.readingtime);
 		myDataBase = new MyDataBase(this);
+		endbtn.setEnabled(false);
 		Intent intent = getIntent();
 		ids = intent.getIntExtra("ids", 0);
-		String startpage=null;
 		String mappath=null;
-		Log.v("startreading", "first");
 		if(ids != 0 )
 		{
-			Log.v("startreading", "second");
 			//必须先初始化progress表，否则为空
 			Log.v("startreading", Integer.toString(ids));
 			startpage=myDataBase.getStartPageByBookId(ids);
-			Log.v("startreading", "after startpage"+startpage);
 			mappath=myDataBase.getBitmap(ids);
-		Log.v("startreading", startpage.toString()+" "+mappath);
 		}
 		Log.v("startreading", startpage.toString()+" "+mappath);
 		Bitmap bm=BitmapFactory.decodeFile(mappath);
@@ -68,13 +65,41 @@ public class StartReading extends Activity
 			startpage="0";
 		Log.v("startreading", startpage);
 		editText.setText(startpage);
+//		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/ni7seg.ttf");
+		Log.v("startreading", "ziti");
+//		readtime.setTypeface(face);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				
+				reading=true;
+				endbtn.setEnabled(true);				long nowtime = System.currentTimeMillis();
+				CharSequence nowtimeSequence = DateFormat.format("hh:mm:ss", nowtime);
+				starttime = nowtimeSequence.toString();
+				new TimeThread().start();				
+			}
+		});
+		endbtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0)
+			{
+				// TODO Auto-generated method stub
+				reading=false;
+				long time = System.currentTimeMillis();
+				CharSequence endstr = DateFormat.format("hh:mm:ss", time);
+				endtime = endstr.toString();
+				//需要传3个参数：开始时间，结束时间，阅读开始页码
+				Intent endIntent = new Intent();
+				endIntent.putExtra("starttime", starttime);
+				endIntent.putExtra("startpage", startpage);
+				endIntent.putExtra("endtime", endtime);
+				endIntent.putExtra("bookid", ids);
+				endIntent.setClass(getApplicationContext(), EndReading.class);
+				startActivity(endIntent);
+				StartReading.this.finish();
 			}
 		});
 	}
@@ -91,6 +116,7 @@ public class StartReading extends Activity
 					Thread.sleep(1000);
 					Message msg=new Message();
 					msg.what=SECOND;
+					timer+=1000;
 					handler.sendMessage(msg);
 				} catch (Exception e)
 				{
@@ -109,9 +135,7 @@ public class StartReading extends Activity
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case SECOND:
-				long sysTime = System.currentTimeMillis();
-				CharSequence sysTimeStr = DateFormat.format("hh:mm:ss", sysTime);
-				readtime.setText(sysTimeStr);
+				readtime.setText(new SimpleDateFormat("HH:mm:ss").format(timer));
 				break;
 			
 			default:

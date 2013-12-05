@@ -3,7 +3,7 @@ package com.hitiread.dbms;
 import java.util.ArrayList;
 
 import com.hitiread.entity.BookInfo;
-import com.hitiread.entity.ReadProgress;
+import com.hitiread.entity.ReadNote;
 import com.hitiread.view.BookView;
 
 import android.content.Context;
@@ -45,8 +45,10 @@ public class MyDataBase
 			String pages = cursor.getString(cursor.getColumnIndex("pages"));
 			String isbn = cursor.getString(cursor.getColumnIndex("isbn"));
 			String summary = cursor.getString(cursor.getColumnIndex("summary"));
+			String lastread = cursor.getString(cursor.getColumnIndex("lastread"));
+			String progress = cursor.getString(cursor.getColumnIndex("progress"));
 			BookInfo book = new BookInfo(id, title, author, publisher,
-					publishdate, summary, isbn, pages);
+					publishdate, summary, isbn, pages, lastread, progress);
 			array.add(book);
 			cursor.moveToNext();
 		}
@@ -76,7 +78,7 @@ public class MyDataBase
 		mydatabase = myOpenHelper.getWritableDatabase();
 		mydatabase
 				.execSQL("insert into bookinfo(title,author,publisher,publishdate"
-						+ ",summary,pages,isbn)values('"
+						+ ",summary,pages,lastread,progress,isbn)values('"
 						+ book.getTitle()
 						+ "','"
 						+ book.getAuthor()
@@ -88,10 +90,14 @@ public class MyDataBase
 						+ book.getSummary()
 						+ "','"
 						+ book.getPages()
+						+"','"
+						+ book.getLastRead()
+						+"','"
+						+book.getProgress()
 						+ "','" + book.getISBN() + "')");
 		mydatabase.close();
 	}
-
+/*
 	public void toInsert(ReadProgress progress)
 	{
 		mydatabase = myOpenHelper.getWritableDatabase();
@@ -111,11 +117,39 @@ public class MyDataBase
 						+ progress.getEndTime() + "')");
 		mydatabase.close();
 	}
-
-	public void toUpdate(ReadProgress progress)
+*/
+	public void toInsert(ReadNote note)
 	{
 		mydatabase = myOpenHelper.getWritableDatabase();
-		mydatabase.execSQL("");
+		mydatabase
+				.execSQL("insert into readnote(bookid,starttime,endtime,startpage,"
+						+"endpage,title,content,share)values('" 
+						+ note.getBookId() 
+						+ "','"
+						+ note.getStartTime() 
+						+ "','" 
+						+ note.getEndTime()
+						+ "','" 
+						+ note.getStartPage()
+						+ "','"
+						+ note.getEndPage()
+						+ "','"
+						+ note.getTitle() 
+						+ "','" 
+						+ note.getContent()
+						+ "','" 
+						+ note.getShare() + "')");
+		mydatabase.close();
+	}
+
+	public void toUpdateProgressWihtEndPage(int id, String end, String prog)
+	{
+		mydatabase = myOpenHelper.getWritableDatabase();
+		mydatabase.execSQL("update bookinfo set lastread='" + end
+				+ "' where _id='" + id + "'");
+		double progress = Double.parseDouble(prog);
+		mydatabase.execSQL("update bookinfo set progress='" + Double.toString(progress) 
+				+ "' where _id='" + id + "'");
 		mydatabase.close();
 	}
 
@@ -124,13 +158,11 @@ public class MyDataBase
 		mydatabase = myOpenHelper.getWritableDatabase();
 		switch (type) {
 		case BookInfo.BOOK_INFO:
-			mydatabase.execSQL("delete from bookinfo where _id=" + ids + "");
-			mydatabase.execSQL("delete from readprogress where bookid=" + ids
-					+ "");
+			mydatabase.execSQL("delete from bookinfo where _id='" + ids + "'");
+			mydatabase.execSQL("delete from readnote where bookid='" + ids
+					+ "'");
 			break;
-		case ReadProgress.READ_PROGRESS:
-			mydatabase
-					.execSQL("delete from readprogress where _id=" + ids + "");
+		
 		default:
 			break;
 		}
@@ -141,13 +173,26 @@ public class MyDataBase
 	{
 		mydatabase = myOpenHelper.getWritableDatabase();
 		Log.v("databse", "cursor");
-		Cursor cursor = mydatabase.rawQuery("select * from readprogress"
-				+ " where bookid='" + ids + "'", null);
+		Cursor cursor = mydatabase.rawQuery("select lastread from bookinfo"
+				+ " where _id='" + ids + "'", null);
 		Log.v("database", "cursor null");
-		String start="";
-		if(cursor.moveToFirst())
-			start = cursor.getString(cursor.getColumnIndex("endpage"));
+		String start = "";
+		if (cursor.moveToFirst())
+			start = cursor.getString(cursor.getColumnIndex("lastread"));
 		mydatabase.close();
 		return start;
+	}
+	public String getTotalPageByBookId(int ids)
+	{
+		mydatabase = myOpenHelper.getWritableDatabase();
+		Log.v("databse", "cursor");
+		Cursor cursor = mydatabase.rawQuery("select pages from bookinfo"
+				+ " where _id='" + ids + "'", null);
+		Log.v("database", "cursor null");
+		String page = "";
+		if (cursor.moveToFirst())
+			page = cursor.getString(cursor.getColumnIndex("pages"));
+		mydatabase.close();
+		return page;
 	}
 }

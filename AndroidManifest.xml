@@ -59,5 +59,9 @@
             android:name="com.hitiread.view.StartReading"
             android:label="@string/classify" >
         </activity>
+        <activity
+            android:name="com.hitiread.view.EndReading"
+            android:label="@string/classify" >
+        </activity>
     </application>
 </manifest>

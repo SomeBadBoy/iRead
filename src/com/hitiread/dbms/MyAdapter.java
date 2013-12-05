@@ -57,7 +57,10 @@ public class MyAdapter extends BaseAdapter
 		}
 		vh=(ViewHolder) convertView.getTag();
 		vh.tv1.setText(array.get(position).getTitle());
-		vh.tv2.setText(array.get(position).getPages());
+		if(array.get(position).getProgress() == "")
+			vh.tv2.setText("0%");
+		else
+			vh.tv2.setText(array.get(position).getProgress()+"%");
 		return convertView;
 	}
 

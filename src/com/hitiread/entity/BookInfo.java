@@ -19,11 +19,14 @@ public class BookInfo implements Parcelable
 	private String mISBN;
 	private String mSummary;
 	private String mPages;
+	private String lastread;
+	private String progress;
 	private int ids;
 
 
 	public BookInfo(String title, String author, String publisher,
-			String publishdate, String isbn, String summary, String pages)
+			String publishdate, String isbn, String summary, 
+			String pages, String last, String prog)
 	{
 		mTitle = title;
 		mAuthor = author;
@@ -32,10 +35,13 @@ public class BookInfo implements Parcelable
 		mISBN = isbn;
 		mSummary = summary;
 		mPages = pages;
+		lastread = last;
+		progress = prog;
 	}
 
 	public BookInfo(int id, String title, String author, String publisher,
-			String publishdate, String isbn, String summary, String pages)
+			String publishdate, String isbn, String summary, String pages,
+			String last, String prog)
 	{
 		ids = id;
 		mTitle = title;
@@ -45,6 +51,8 @@ public class BookInfo implements Parcelable
 		mISBN = isbn;
 		mSummary = summary;
 		mPages = pages;
+		lastread = last;
+		progress = prog;
 	}
 
 	public BookInfo()
@@ -55,6 +63,22 @@ public class BookInfo implements Parcelable
 	public int getId()
 	{
 		return ids;
+	}
+	public void setLastRead(String last)
+	{
+		lastread = last;
+	}
+	public String getLastRead()
+	{
+		return lastread;
+	}
+	public void setProgress(String prog)
+	{
+		progress = prog;
+	}
+	public String getProgress()
+	{
+		return progress;
 	}
 
 	public void setPages(String Pages)
@@ -150,6 +174,8 @@ public class BookInfo implements Parcelable
 			bookInfo.mISBN = source.readString();
 			bookInfo.mSummary = source.readString();
 			bookInfo.mPages = source.readString();
+			bookInfo.lastread = "0";
+			bookInfo.progress = "0";
 			return bookInfo;
 		}
 
