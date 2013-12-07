@@ -34,7 +34,7 @@
         android:layout_alignLeft="@+id/scan_add_button"
         android:layout_below="@+id/classify_button"
         android:gravity="left"
-        android:text="@string/progress" />
+        android:text="@string/read_note_view" />
 
     <Button
         android:id="@+id/interest_button"

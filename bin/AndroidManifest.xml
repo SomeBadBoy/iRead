@@ -34,20 +34,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.hitiread.entity.BookStore"
-            android:label="@string/book_store" >
-        </activity>
-        <activity
             android:name="com.hitiread.view.Classify"
             android:label="@string/classify" >
         </activity>
         <activity
             android:name="com.hitwwq.scanner.ScanAdd"
-            android:label="@string/classify" >
+            android:label="@string/scan" >
         </activity>
         <activity
             android:name="com.hitiread.view.BookView"
-            android:label="@string/classify" >
+            android:label="@string/bookinfo" >
         </activity>
         <activity
             android:name="com.hitwwq.scanner.ScannerActivity"
@@ -57,11 +53,20 @@
         </activity>
         <activity
             android:name="com.hitiread.view.StartReading"
-            android:label="@string/classify" >
+            android:label="@string/read_start" >
         </activity>
         <activity
             android:name="com.hitiread.view.EndReading"
-            android:label="@string/classify" >
+            android:label="@string/end_reading" >
         </activity>
+        <activity
+            android:name="com.hitiread.view.NoteActivity"
+            android:label="@string/read_note" >
+        </activity>
+        <activity
+            android:name="com.hitiread.view.NoteShared"
+            android:label="@string/read_shared" >
+        </activity>
+        
     </application>
 </manifest>

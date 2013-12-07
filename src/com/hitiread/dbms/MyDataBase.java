@@ -1,11 +1,11 @@
 package com.hitiread.dbms;
 
 import java.util.ArrayList;
-
 import com.hitiread.entity.BookInfo;
+import com.hitiread.entity.ChildEntity;
+import com.hitiread.entity.GroupEntity;
 import com.hitiread.entity.ReadNote;
 import com.hitiread.view.BookView;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -59,7 +59,78 @@ public class MyDataBase
 		}
 		return array1;
 	}
+	
+	public ReadNote getReadNote(int ids)
+	{
+		mydatabase = myOpenHelper.getWritableDatabase();
+		ReadNote note = null;
+		Cursor cursor = mydatabase
+				.rawQuery("select * from readnote where _id='"+ids+"'", null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			String title = cursor.getString(cursor.getColumnIndex("title"));
+			String content = cursor.getString(cursor.getColumnIndex("content"));
+			String starttime = cursor.getString(cursor.getColumnIndex("starttime"));
+			String endtime = cursor.getString(cursor.getColumnIndex("endtime"));
+			String startpage = cursor.getString(cursor.getColumnIndex("startpage"));
+			String endpage = cursor.getString(cursor.getColumnIndex("endpage"));
+			note = new ReadNote(ids, starttime, endtime, startpage, endpage, title, content, 0);
+			cursor.moveToNext();
+		}
+		return note;
+	}
+	
+	public ArrayList<GroupEntity> getBookNote()
+	{
+		ArrayList<GroupEntity> array = new ArrayList<GroupEntity>();
+		mydatabase = myOpenHelper.getWritableDatabase();
+		Cursor cursor = mydatabase.rawQuery("select _id,title from bookinfo", null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			int id = cursor.getInt(cursor.getColumnIndex("_id"));
+			String bookname = cursor.getString(cursor.getColumnIndex("title"));
+			GroupEntity temp = new GroupEntity(id, bookname);
+			array.add(temp);
+			cursor.moveToNext();
+		}
+		mydatabase.close();
+		return array;
+	}
 
+	public ArrayList<ChildEntity> getNoteList(int id)
+	{
+		ArrayList<ChildEntity> array = new ArrayList<ChildEntity>();
+		ArrayList<ChildEntity> array1 = new ArrayList<ChildEntity>();
+		mydatabase = myOpenHelper.getWritableDatabase();
+		Cursor cursor = mydatabase
+				.rawQuery("select _id,title,endtime from readnote where bookid ='"+id+"'",null);
+		cursor.moveToFirst();
+		Log.v("note", "8");
+		while (!cursor.isAfterLast())
+		{
+			Log.v("note", "9");
+			int noteid = cursor.getInt(cursor.getColumnIndex("_id"));
+			Log.v("note", "id="+noteid);
+			String title = cursor.getString(cursor.getColumnIndex("title"));
+			Log.v("note", "title="+title);
+			String endtime = cursor.getString(cursor.getColumnIndex("endtime"));
+			Log.v("note", "endtime="+endtime);
+			ChildEntity object = new ChildEntity(noteid, id, title, endtime);
+			array1.add(object);
+			cursor.moveToNext();
+		}
+		Log.v("note", "10");
+		mydatabase.close();
+		for (int i = array1.size(); i > 0; i--)
+		{
+			Log.v("note", "11");
+			array.add(array1.get(i-1));
+		}
+		Log.v("note", "12"+array.size()+array.toString());
+		return array;
+	}
 	public String getBitmap(int id)
 	{
 		String path = BookView.getSDPath();

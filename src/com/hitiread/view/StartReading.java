@@ -88,6 +88,7 @@ public class StartReading extends Activity
 			{
 				// TODO Auto-generated method stub
 				reading=false;
+				button.setEnabled(false);
 				long time = System.currentTimeMillis();
 				CharSequence endstr = DateFormat.format("hh:mm:ss", time);
 				endtime = endstr.toString();
@@ -102,6 +103,17 @@ public class StartReading extends Activity
 				StartReading.this.finish();
 			}
 		});
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		// TODO Auto-generated method stub
+		//super.onBackPressed();
+		Intent mainIntent = new Intent();
+		mainIntent.setClass(getApplicationContext(), MainActivity.class);
+		startActivity(mainIntent);
+		finish();
 	}
 
 	public class TimeThread extends Thread

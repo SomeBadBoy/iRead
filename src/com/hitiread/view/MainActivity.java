@@ -30,7 +30,8 @@ import com.hitwwq.scanner.Util;
 
 public class MainActivity extends Activity
 {
-	private Button btn = null;
+	private Button scanbtn = null;
+	private Button progressbtn = null;
 	ListView lv;
 	LayoutInflater inflater;
 	ArrayList<BookInfo> array;
@@ -52,8 +53,10 @@ public class MainActivity extends Activity
 		Log.v("main", "listview");
 		lv.setAdapter(adapter);
 
-		btn = (Button) findViewById(R.id.scan_add_button);
-		btn.setOnClickListener(listener);
+		scanbtn = (Button) findViewById(R.id.scan_add_button);
+		scanbtn.setOnClickListener(listener);
+		progressbtn = (Button)findViewById(R.id.progress_button);
+		progressbtn.setOnClickListener(listener);
 		// µã»÷ÔÄ¶Á
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -120,7 +123,10 @@ public class MainActivity extends Activity
 		{
 			Button tempbtn = (Button) v;
 			switch (tempbtn.getId()) {
-			case R.id.classify_button:
+			case R.id.progress_button:
+				Intent progintent = new Intent();
+				progintent.setClass(MainActivity.this, NoteActivity.class);
+				startActivity(progintent);
 				break;
 			
 			case R.id.scan_add_button:

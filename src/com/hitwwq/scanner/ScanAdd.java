@@ -1,5 +1,6 @@
 package com.hitwwq.scanner;
 
+import com.hitiread.view.MainActivity;
 import com.hitiread.view.R;
 
 import android.app.Activity;
@@ -59,6 +60,15 @@ public class ScanAdd extends Activity
 			}
 		}
 	};
+	@Override
+	public void onBackPressed()
+	{
+		// TODO Auto-generated method stub
+		//super.onBackPressed();
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
 
 /*	private OnClickListener listener=new OnClickListener() {
 		
