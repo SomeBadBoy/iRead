@@ -12,52 +12,48 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/scan_add_button"
-        android:layout_alignLeft="@+id/scan_add_button"
+        android:layout_above="@+id/linearLayout1"
         android:layout_alignParentTop="true" >
-
     </ListView>
-    
-    <Button
-        android:id="@+id/scan_add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/listView1"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:gravity="left"
-        android:text="@string/scan_add" />
+        android:layout_alignRight="@+id/listView1" >
 
-    <Button
-        android:id="@+id/progress_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/scan_add_button"
-        android:layout_below="@+id/classify_button"
-        android:gravity="left"
-        android:text="@string/read_note_view" />
+        <Button
+            android:id="@+id/scan_add_button"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:gravity="left"
+            android:text="@string/scan_add" />
 
-    <Button
-        android:id="@+id/interest_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/progress_button"
-        android:layout_alignBottom="@+id/progress_button"
-        android:layout_alignRight="@+id/classify_button"
-        android:gravity="right"
-        android:text="@string/interest" />
+        <Button
+            android:id="@+id/progress_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/read_note_view" />
 
-    
+        <Button
+            android:id="@+id/interest_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/interest" />
 
-    <Button
-        android:id="@+id/classify_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/scan_add_button"
-        android:layout_alignBottom="@+id/scan_add_button"
-        android:layout_alignRight="@+id/listView1"
-        android:layout_marginRight="24dp"
-        android:gravity="right"
-        android:text="@string/classify" />
+        <Button
+            android:id="@+id/classify_button"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="24dp"
+            android:gravity="right"
+            android:text="@string/classify" />
 
+    </LinearLayout>
 
 </RelativeLayout>

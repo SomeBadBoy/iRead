@@ -11,7 +11,7 @@ import com.hitiread.view.R;
 
 public class ScannerActivity extends Activity implements OnDecodeCompletionListener
 {
-	public final static int RESULT_CODE=1;
+	public final static int RESULT_CODE=3;
 	private ScannerView scannerView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

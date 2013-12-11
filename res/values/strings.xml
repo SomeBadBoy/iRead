@@ -8,8 +8,8 @@
     <string name="store_title">书库</string>
     <string name="search">搜索</string>
     <string name="search_hint">请输入书名</string>
-    <string name="scan_add">扫描添加</string>
-    <string name="classify">分类</string>
+    <string name="scan_add">添加书籍</string>
+    <string name="classify">图书分类</string>
 	<string name="progress">查询进度</string>
     <string name="interest">兴趣分析</string>
     <string name="bookname">《书名》</string>
@@ -20,7 +20,7 @@
 	<string name="all_readtime">1時23分45秒</string>
 	<string name="scan_hint">请输入ISBN号</string>
 	<string name="ok">确定</string>
-	<string name="isbn_hint">输入9或13位ISBN号</string>
+	<string name="isbn_hint">输入13位ISBN号</string>
 	<string name="cancel">取消</string>
 	<string name="bookinfo">图书信息</string>
 	<string name="scan">扫描</string>

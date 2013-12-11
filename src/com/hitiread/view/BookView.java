@@ -3,12 +3,15 @@ package com.hitiread.view;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.hitiread.view.R;
 import com.hitiread.dbms.MyDataBase;
 import com.hitiread.entity.BookInfo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ public class BookView extends Activity
 	private Button btn;
 	private MyDataBase myDataBase;
 	private BookInfo book;
+//	private ArrayList<Classify> classify;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -71,13 +75,39 @@ public class BookView extends Activity
 		{
 			// TODO Auto-generated method stub
 			myDataBase.toInsert(book);
-/*
-			ReadProgress progress=new ReadProgress(book.getId(),book.getPages());
-			Log.v("reading", progress.getEndPage());
-			myDataBase.toInsert(progress);
-			*/
+/*			new AlertDialog.Builder(BookView.this)
+			.setTitle("添加到分类")
+			.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.setNeutralButton("新建分类", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.setItems(1,new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.show();
+*/
 			Log.v("bookview", "Onclick");
-			saveBigmap(book);
+			saveBitmap(book);
 			Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_LONG)
 					.show();
 			Intent intent = new Intent();
@@ -97,7 +127,7 @@ public class BookView extends Activity
 		BookView.this.finish();
 	}
 
-	private void saveBigmap(BookInfo book)
+	private void saveBitmap(BookInfo book)
 	{
 		String filename = getSDPath();
 		File file = new File(filename + book.getISBN() + ".png");

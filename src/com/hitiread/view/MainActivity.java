@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import com.hitiread.dbms.MyAdapter;
 import com.hitiread.dbms.MyDataBase;
 import com.hitiread.entity.BookInfo;
 import com.hitwwq.scanner.ScanAdd;
+import com.hitwwq.scanner.ScannerActivity;
 import com.hitwwq.scanner.Util;
 
 public class MainActivity extends Activity
@@ -39,6 +41,10 @@ public class MainActivity extends Activity
 	private Handler handler;
 	private ProgressDialog mpd;
 	public final static int REQUEST_CODE = 1;
+	public final static int LISTALERTDIALOG = 2;
+	DownloadThread thread = null;
+	private String str = null;
+	private final String[] scantype = {"扫描添加","手动输入"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -80,36 +86,32 @@ public class MainActivity extends Activity
 					final int position, long id)
 			{
 				// TODO Auto-generated method stub
-				new AlertDialog.Builder(getApplicationContext())
-						.setTitle("删除")
-						.setMessage("是否删除书籍")
-						.setNegativeButton("取消",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface arg0,
-											int arg1)
-									{
-										// TODO Auto-generated method stub
-
-									}
-								})
-						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which)
-									{
-										// TODO Auto-generated method stub
-										mdb.toDelete(array.get(position)
-												.getId(), BookInfo.BOOK_INFO);
-										array = mdb.getArray();
-										MyAdapter adapter = new MyAdapter(
-												getLayoutInflater(), array);
-										lv.setAdapter(adapter);
-									}
-								}).create().show();
+				Log.v("main", "long");
+				new AlertDialog.Builder(MainActivity.this)
+				.setTitle("删除")
+				.setMessage("是否删除书籍")
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1)
+					{
+						// TODO Auto-generated method stub
+						mdb.toDelete(array.get(position).getId(), BookInfo.BOOK_INFO);
+						array=mdb.getArray();
+						MyAdapter myAdapter = new MyAdapter(inflater, array);
+						lv.setAdapter(myAdapter);
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1)
+					{
+						// TODO Auto-generated method stub
+						
+					}
+				})
+				.create().show();
 				return true;
 			}
 		});
@@ -128,16 +130,35 @@ public class MainActivity extends Activity
 				progintent.setClass(MainActivity.this, NoteActivity.class);
 				startActivity(progintent);
 				break;
-			
 			case R.id.scan_add_button:
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, ScanAdd.class);
-				startActivityForResult(intent, REQUEST_CODE);
-				/*
-				 * ()) { case R.id.scan_add_butt
-				 * intent.setClass(MainActivity.this, ScannerActivity.class);
-				 * startActivityForResult(intent, REQUEST_CODE);
-				 */
+				
+				new AlertDialog.Builder(MainActivity.this)
+				.setTitle("添加方式")
+				.setItems(scantype, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// TODO Auto-generated method stub
+						Log.v("dialog", "which"+which);
+						switch (which) {
+						case 0:
+							Intent newintent = new Intent();
+							newintent.setClass(MainActivity.this, ScannerActivity.class);
+							startActivityForResult(newintent, REQUEST_CODE);
+							break;
+						case 1:
+							Intent intent = new Intent();
+							intent.setClass(getApplicationContext(), ScanAdd.class);
+							startActivityForResult(intent, REQUEST_CODE);
+							break;
+						
+						default:
+							break;
+						}
+					}
+				}).show();
+				
 				handler = new Handler()
 				{
 
@@ -153,10 +174,6 @@ public class MainActivity extends Activity
 
 						Intent scanIntent = new Intent(MainActivity.this,
 								BookView.class);
-						// Bundle bd=new Bundle();
-						// bundle.putSerializable(key,object);
-						// bd.putSerializable(BookInfo.class.getName(),book);
-						// intent.putExtras(bd);
 						scanIntent.putExtra(BookInfo.class.getName(), book);
 						startActivity(scanIntent);
 						MainActivity.this.finish();
@@ -174,11 +191,10 @@ public class MainActivity extends Activity
 	{
 		if (requestCode == REQUEST_CODE)
 		{
-			if (resultCode == ScanAdd.RESULT_CODE)
-				;
+			if (resultCode == ScannerActivity.RESULT_CODE || resultCode == ScanAdd.RESULT_CODE)
 			{
 				Bundle bundle = data.getExtras();
-				String str = bundle.getString("ISBN");
+				str = bundle.getString("ISBN");
 				Toast.makeText(MainActivity.this, str, Toast.LENGTH_LONG);
 				mpd = new ProgressDialog(this);
 				mpd.setMessage("请稍候，正在读取信息...");
@@ -187,7 +203,8 @@ public class MainActivity extends Activity
 				String urlstr = "https://api.douban.com/v2/book/isbn/" + str;
 				Log.i("OUTPUT", urlstr);
 				// 扫到ISBN后，启动下载线程下载图书信息
-				new DownloadThread(urlstr).start();
+				thread = new DownloadThread(urlstr);
+				thread.start();
 			}
 		}
 
@@ -224,6 +241,49 @@ public class MainActivity extends Activity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	protected void onPause()
+	{
+		// TODO Auto-generated method stub
+		super.onPause();
+		if(thread != null)
+			if(thread.isAlive())
+			{
+				Log.v("thread", "onPause");
+				thread.interrupt();
+			}
+	}
+
+	@Override
+	protected void onResume()
+	{
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(thread != null)
+		{
+			if(thread.isInterrupted())
+			{
+				Log.v("thread", "onResume");
+				thread = null;
+				thread = new DownloadThread("https://api.douban.com/v2/book/isbn/"+str);
+				thread.start();
+			}
+		}
+	}
+
+	@Override
+	protected void onStop()
+	{
+		// TODO Auto-generated method stub
+		super.onStop();
+		if(thread != null)
+		if(thread.isAlive())
+		{
+			Log.v("thread", "onStop");
+			thread.interrupt();
+		}
 	}
 
 }

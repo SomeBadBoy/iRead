@@ -2,6 +2,7 @@ package com.hitiread.view;
 
 import java.util.ArrayList;
 import com.hitiread.dbms.MyDataBase;
+import com.hitiread.dbms.MyExAdapter;
 import com.hitiread.entity.ChildEntity;
 import com.hitiread.entity.GroupEntity;
 
@@ -32,15 +33,12 @@ public class NoteActivity extends Activity
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.noteactivity);
-		Log.v("note", "1");
-		inflater = getLayoutInflater();
-		ContactsInfoAdapter adapter = new ContactsInfoAdapter();
-		
-		Log.v("note", "2");
+
 		expandableListView = (ExpandableListView)findViewById(R.id.noteexlv);
-		Log.v("note", "3");
-		Log.v("note", "4");
+
         initializeData();
+		inflater = getLayoutInflater();
+		MyExAdapter adapter = new MyExAdapter(inflater, bookname, readnote);
 		Log.v("note", "5");
         expandableListView.setAdapter(adapter);
         expandableListView.setCacheColorHint(0);  //设置拖动列表的时候防止出现黑色背景 
@@ -77,121 +75,4 @@ public class NoteActivity extends Activity
 		Log.v("note", "13");
 	}
 
-	class ContactsInfoAdapter extends BaseExpandableListAdapter
-	{
-
-
-		@Override
-		public Object getChild(int groupPosition, int childPosition)
-		{
-			// TODO Auto-generated method stub
-			return readnote.get(groupPosition).get(childPosition);
-		}
-
-		@Override
-		public long getChildId(int groupPosition, int childPosition)
-		{
-			// TODO Auto-generated method stub
-			return childPosition;
-		}
-
-		@Override
-		public int getChildrenCount(int groupPosition)
-		{
-			// TODO Auto-generated method stub
-			return readnote.get(groupPosition).size();
-		}
-
-		@Override
-		public Object getGroup(int groupPosition)
-		{
-			// TODO Auto-generated method stub
-			return bookname.get(groupPosition);
-		}
-
-		@Override
-		public int getGroupCount()
-		{
-			// TODO Auto-generated method stub
-			return bookname.size();
-		}
-
-		@Override
-		public long getGroupId(int groupPosition)
-		{
-			// TODO Auto-generated method stub
-			return groupPosition;
-		}
-
-		@Override
-		public boolean hasStableIds()
-		{
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean isChildSelectable(int groupPosition, int childPosition)
-		{
-			// TODO Auto-generated method stub
-			return true;
-		}
-		
-		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded, 
-				View convertView, ViewGroup parent)
-		{
-			// TODO Auto-generated method stub
-			GroupHolder gHolder = null;
-			if(convertView == null)
-			{
-				Log.v("groupview", "null");
-				gHolder = new GroupHolder();
-				convertView = inflater.inflate(com.hitiread.view.R.layout.groupexlv, null);
-				gHolder.tv1 = (TextView)convertView.findViewById(com.hitiread.view.R.id.grouptv1);
-				gHolder.tv2 = (TextView)convertView.findViewById(com.hitiread.view.R.id.grouptv2);
-				convertView.setTag(gHolder);
-			}
-			gHolder = (GroupHolder)convertView.getTag();
-			Log.v("groupview", "1");
-			Log.v("groupview", "4"+gHolder.tv1.getText());
-			Log.v("groupview", bookname.get(groupPosition).getTitle());
-			gHolder.tv1.setText(bookname.get(groupPosition).getTitle());
-			Log.v("groupview", "2"+gHolder.tv1.getText());
-			gHolder.tv2.setText(Integer.toString(getChildrenCount(groupPosition)));
-			Log.v("groupview", "3"+gHolder.tv2.getText());
-			return convertView;
-		}
-
-		@Override
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent)
-		{
-			// TODO Auto-generated method stub
-			ChildHolder childHolder = null;
-			if(convertView == null)
-			{
-				childHolder = new ChildHolder();
-				convertView = inflater.inflate(com.hitiread.view.R.layout.childexlv, null);
-				childHolder.tv1 = (TextView)convertView.findViewById(com.hitiread.view.R.id.childtv1);
-				childHolder.tv2 = (TextView)convertView.findViewById(com.hitiread.view.R.id.childtv2);
-				convertView.setTag(childHolder);
-			}
-			childHolder = (ChildHolder)convertView.getTag();
-			childHolder.tv1.setText(readnote.get(groupPosition).get(childPosition).getTitle());
-			childHolder.tv2.setText(readnote.get(groupPosition).get(childPosition).getEndTime());
-			return convertView;
-		}
-		
-	}
-	class GroupHolder
-	{
-		TextView tv1,tv2;
-	}
-	
-	class ChildHolder
-	{
-		TextView tv1,tv2;
-	}
-	
 }

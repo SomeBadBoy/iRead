@@ -1,8 +1,13 @@
 package com.hitiread.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract.Contacts.Data;
+import android.util.Log;
 
 /**
  * Created by wwq on 13-7-10.
@@ -22,11 +27,13 @@ public class BookInfo implements Parcelable
 	private String lastread;
 	private String progress;
 	private int ids;
+	private String tag;
+	private String recent;
 
 
 	public BookInfo(String title, String author, String publisher,
 			String publishdate, String isbn, String summary, 
-			String pages, String last, String prog)
+			String pages, String last, String prog, String rec)
 	{
 		mTitle = title;
 		mAuthor = author;
@@ -37,11 +44,12 @@ public class BookInfo implements Parcelable
 		mPages = pages;
 		lastread = last;
 		progress = prog;
+		recent = rec;
 	}
 
 	public BookInfo(int id, String title, String author, String publisher,
 			String publishdate, String isbn, String summary, String pages,
-			String last, String prog)
+			String last, String prog, String rec)
 	{
 		ids = id;
 		mTitle = title;
@@ -53,6 +61,7 @@ public class BookInfo implements Parcelable
 		mPages = pages;
 		lastread = last;
 		progress = prog;
+		recent = rec;
 	}
 
 	public BookInfo()
@@ -60,6 +69,22 @@ public class BookInfo implements Parcelable
 		// TODO Auto-generated constructor stub
 	}
 
+	public String getTag()
+	{
+		return tag;
+	}
+	public void setTag(String t)
+	{
+		this.tag = t;
+	}
+	public String getRecent()
+	{
+		return recent;
+	}
+	public void setRecent(String rec)
+	{
+		this.recent = rec;
+	}
 	public int getId()
 	{
 		return ids;
@@ -176,6 +201,9 @@ public class BookInfo implements Parcelable
 			bookInfo.mPages = source.readString();
 			bookInfo.lastread = "0";
 			bookInfo.progress = "0";
+			SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
+			bookInfo.recent = date.format(new Date(System.currentTimeMillis()));
+			Log.v("bookinfo", bookInfo.recent);
 			return bookInfo;
 		}
 

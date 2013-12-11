@@ -14,6 +14,7 @@ import com.hitiread.entity.BookInfo;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class Util {
 	   public static String Download(String urlstr)
@@ -22,7 +23,7 @@ public class Util {
 	       try{
 	           URL url=new URL(urlstr);
 	           URLConnection connection =url.openConnection();
-
+	           Log.v("download", "times");
 	           String line;
 	           BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 	           while ((line = in.readLine()) != null) {

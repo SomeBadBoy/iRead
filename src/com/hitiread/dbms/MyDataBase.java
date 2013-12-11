@@ -1,8 +1,13 @@
 package com.hitiread.dbms;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 import com.hitiread.entity.BookInfo;
 import com.hitiread.entity.ChildEntity;
+import com.hitiread.entity.Classify;
 import com.hitiread.entity.GroupEntity;
 import com.hitiread.entity.ReadNote;
 import com.hitiread.view.BookView;
@@ -45,47 +50,73 @@ public class MyDataBase
 			String pages = cursor.getString(cursor.getColumnIndex("pages"));
 			String isbn = cursor.getString(cursor.getColumnIndex("isbn"));
 			String summary = cursor.getString(cursor.getColumnIndex("summary"));
-			String lastread = cursor.getString(cursor.getColumnIndex("lastread"));
-			String progress = cursor.getString(cursor.getColumnIndex("progress"));
+			String lastread = cursor.getString(cursor
+					.getColumnIndex("lastread"));
+			String progress = cursor.getString(cursor
+					.getColumnIndex("progress"));
+			// String tag = cursor.getString(cursor.getColumnIndex("tag"));
+			String recent = cursor.getString(cursor.getColumnIndex("recent"));
 			BookInfo book = new BookInfo(id, title, author, publisher,
-					publishdate, summary, isbn, pages, lastread, progress);
+					publishdate, summary, isbn, pages, lastread, progress,
+					recent);
 			array.add(book);
 			cursor.moveToNext();
 		}
 		mydatabase.close();
+		Collections.sort(array, new SortByRecent());
 		for (int i = array.size(); i > 0; i--)
 		{
 			array1.add(array.get(i - 1));
 		}
 		return array1;
 	}
-	
+
 	public ReadNote getReadNote(int ids)
 	{
 		mydatabase = myOpenHelper.getWritableDatabase();
 		ReadNote note = null;
-		Cursor cursor = mydatabase
-				.rawQuery("select * from readnote where _id='"+ids+"'", null);
+		Cursor cursor = mydatabase.rawQuery(
+				"select * from readnote where _id='" + ids + "'", null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast())
 		{
 			String title = cursor.getString(cursor.getColumnIndex("title"));
 			String content = cursor.getString(cursor.getColumnIndex("content"));
-			String starttime = cursor.getString(cursor.getColumnIndex("starttime"));
+			String starttime = cursor.getString(cursor
+					.getColumnIndex("starttime"));
 			String endtime = cursor.getString(cursor.getColumnIndex("endtime"));
-			String startpage = cursor.getString(cursor.getColumnIndex("startpage"));
+			String startpage = cursor.getString(cursor
+					.getColumnIndex("startpage"));
 			String endpage = cursor.getString(cursor.getColumnIndex("endpage"));
-			note = new ReadNote(ids, starttime, endtime, startpage, endpage, title, content, 0);
+			note = new ReadNote(ids, starttime, endtime, startpage, endpage,
+					title, content, 0);
 			cursor.moveToNext();
 		}
 		return note;
 	}
-	
+
+	// public ArrayList<Classify> getTag()
+	// {
+	// mydatabase = myOpenHelper.getWritableDatabase();
+	// Cursor cursor = mydatabase.rawQuery("select tag,num from classify",null);
+	// ArrayList<Classify> array = new ArrayList<Classify>();
+	// cursor.moveToFirst();
+	// while (!cursor.isAfterLast())
+	// {
+	// String tag = cursor.getString(cursor.getColumnIndex("tag"));
+	// long num = cursor.getLong(cursor.getColumnIndex("num"));
+	// Classify temp = new Classify(tag, num);
+	// array.add(temp);
+	// }
+	// return array;
+	// }
+
 	public ArrayList<GroupEntity> getBookNote()
 	{
 		ArrayList<GroupEntity> array = new ArrayList<GroupEntity>();
 		mydatabase = myOpenHelper.getWritableDatabase();
-		Cursor cursor = mydatabase.rawQuery("select _id,title from bookinfo", null);
+		Cursor cursor = mydatabase.rawQuery("select _id,title from bookinfo",
+				null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast())
 		{
@@ -104,19 +135,20 @@ public class MyDataBase
 		ArrayList<ChildEntity> array = new ArrayList<ChildEntity>();
 		ArrayList<ChildEntity> array1 = new ArrayList<ChildEntity>();
 		mydatabase = myOpenHelper.getWritableDatabase();
-		Cursor cursor = mydatabase
-				.rawQuery("select _id,title,endtime from readnote where bookid ='"+id+"'",null);
+		Cursor cursor = mydatabase.rawQuery(
+				"select _id,title,endtime from readnote where bookid ='" + id
+						+ "'", null);
 		cursor.moveToFirst();
 		Log.v("note", "8");
 		while (!cursor.isAfterLast())
 		{
 			Log.v("note", "9");
 			int noteid = cursor.getInt(cursor.getColumnIndex("_id"));
-			Log.v("note", "id="+noteid);
+			Log.v("note", "id=" + noteid);
 			String title = cursor.getString(cursor.getColumnIndex("title"));
-			Log.v("note", "title="+title);
+			Log.v("note", "title=" + title);
 			String endtime = cursor.getString(cursor.getColumnIndex("endtime"));
-			Log.v("note", "endtime="+endtime);
+			Log.v("note", "endtime=" + endtime);
 			ChildEntity object = new ChildEntity(noteid, id, title, endtime);
 			array1.add(object);
 			cursor.moveToNext();
@@ -126,11 +158,12 @@ public class MyDataBase
 		for (int i = array1.size(); i > 0; i--)
 		{
 			Log.v("note", "11");
-			array.add(array1.get(i-1));
+			array.add(array1.get(i - 1));
 		}
-		Log.v("note", "12"+array.size()+array.toString());
+		Log.v("note", "12" + array.size() + array.toString());
 		return array;
 	}
+
 	public String getBitmap(int id)
 	{
 		String path = BookView.getSDPath();
@@ -149,7 +182,7 @@ public class MyDataBase
 		mydatabase = myOpenHelper.getWritableDatabase();
 		mydatabase
 				.execSQL("insert into bookinfo(title,author,publisher,publishdate"
-						+ ",summary,pages,lastread,progress,isbn)values('"
+						+ ",summary,pages,lastread,progress,isbn,recent)values('"
 						+ book.getTitle()
 						+ "','"
 						+ book.getAuthor()
@@ -161,55 +194,37 @@ public class MyDataBase
 						+ book.getSummary()
 						+ "','"
 						+ book.getPages()
-						+"','"
+						+ "','"
 						+ book.getLastRead()
-						+"','"
-						+book.getProgress()
-						+ "','" + book.getISBN() + "')");
+						+ "','"
+						+ book.getProgress()
+						+ "','"
+						+ book.getISBN()
+						+ "','"
+						+ book.getRecent() + "')");
 		mydatabase.close();
 	}
-/*
-	public void toInsert(ReadProgress progress)
-	{
-		mydatabase = myOpenHelper.getWritableDatabase();
-		mydatabase
-				.execSQL("insert into readprogress(bookid,startpage,endpage,totalpage,"
-						+ "starttime,endtime)values('"
-						+ progress.getBookIds()
-						+ "','"
-						+ progress.getStartPage()
-						+ "','"
-						+ progress.getEndPage()
-						+ "','"
-						+ progress.getTotalPage()
-						+ "','"
-						+ progress.getStartTime()
-						+ "','"
-						+ progress.getEndTime() + "')");
-		mydatabase.close();
-	}
-*/
+
 	public void toInsert(ReadNote note)
 	{
 		mydatabase = myOpenHelper.getWritableDatabase();
 		mydatabase
 				.execSQL("insert into readnote(bookid,starttime,endtime,startpage,"
-						+"endpage,title,content,share)values('" 
-						+ note.getBookId() 
+						+ "endpage,title,content,share)values('"
+						+ note.getBookId()
 						+ "','"
-						+ note.getStartTime() 
-						+ "','" 
+						+ note.getStartTime()
+						+ "','"
 						+ note.getEndTime()
-						+ "','" 
+						+ "','"
 						+ note.getStartPage()
 						+ "','"
 						+ note.getEndPage()
 						+ "','"
-						+ note.getTitle() 
-						+ "','" 
+						+ note.getTitle()
+						+ "','"
 						+ note.getContent()
-						+ "','" 
-						+ note.getShare() + "')");
+						+ "','" + note.getShare() + "')");
 		mydatabase.close();
 	}
 
@@ -219,7 +234,15 @@ public class MyDataBase
 		mydatabase.execSQL("update bookinfo set lastread='" + end
 				+ "' where _id='" + id + "'");
 		double progress = Double.parseDouble(prog);
-		mydatabase.execSQL("update bookinfo set progress='" + Double.toString(progress) 
+		mydatabase.execSQL("update bookinfo set progress='"
+				+ Double.toString(progress) + "' where _id='" + id + "'");
+		mydatabase.close();
+	}
+
+	public void toUpdateRecentByBookId(int id, String recent)
+	{
+		mydatabase = myOpenHelper.getWritableDatabase();
+		mydatabase.execSQL("update bookinfo set recent='" + recent
 				+ "' where _id='" + id + "'");
 		mydatabase.close();
 	}
@@ -233,7 +256,7 @@ public class MyDataBase
 			mydatabase.execSQL("delete from readnote where bookid='" + ids
 					+ "'");
 			break;
-		
+
 		default:
 			break;
 		}
@@ -253,6 +276,7 @@ public class MyDataBase
 		mydatabase.close();
 		return start;
 	}
+
 	public String getTotalPageByBookId(int ids)
 	{
 		mydatabase = myOpenHelper.getWritableDatabase();
@@ -265,5 +289,17 @@ public class MyDataBase
 			page = cursor.getString(cursor.getColumnIndex("pages"));
 		mydatabase.close();
 		return page;
+	}
+	class SortByRecent implements Comparator<BookInfo>
+	{
+
+		@Override
+		public int compare(BookInfo lhs, BookInfo rhs)
+		{
+			// TODO Auto-generated method stub
+			
+			return lhs.getRecent().compareTo(rhs.getRecent());
+		}
+		
 	}
 }

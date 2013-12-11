@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -65,18 +64,31 @@ public class StartReading extends Activity
 			startpage="0";
 		Log.v("startreading", startpage);
 		editText.setText(startpage);
-//		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/ni7seg.ttf");
-		Log.v("startreading", "ziti");
-//		readtime.setTypeface(face);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
+				startpage = editText.getText().toString();
+				if(startpage == null || startpage.equals(""))
+				{
+					editText.setError("请输入开始页码");
+					return ;
+				}
+				String total = myDataBase.getTotalPageByBookId(ids);
+				int start = Integer.valueOf(startpage);
+				int totalpage = Integer.valueOf(total);
+				
+				if (start > totalpage) {
+					editText.setError("您已经把整本书读完啦");
+					return ;
+				}
 				reading=true;
-				endbtn.setEnabled(true);				long nowtime = System.currentTimeMillis();
-				CharSequence nowtimeSequence = DateFormat.format("hh:mm:ss", nowtime);
+				endbtn.setEnabled(true);				button.setEnabled(false);
+				editText.setEnabled(false);
+				long nowtime = System.currentTimeMillis();
+				CharSequence nowtimeSequence = DateFormat.format("HH:mm:ss", nowtime);
 				starttime = nowtimeSequence.toString();
 				new TimeThread().start();				
 			}
@@ -88,12 +100,12 @@ public class StartReading extends Activity
 			{
 				// TODO Auto-generated method stub
 				reading=false;
-				button.setEnabled(false);
 				long time = System.currentTimeMillis();
-				CharSequence endstr = DateFormat.format("hh:mm:ss", time);
+				CharSequence endstr = DateFormat.format("HH:mm:ss", time);
 				endtime = endstr.toString();
 				//需要传3个参数：开始时间，结束时间，阅读开始页码
 				Intent endIntent = new Intent();
+				startpage = editText.getText().toString();
 				endIntent.putExtra("starttime", starttime);
 				endIntent.putExtra("startpage", startpage);
 				endIntent.putExtra("endtime", endtime);
