@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/bg"
+    android:background="@drawable/back"
     tools:context=".MainActivity" >
 
     <TextView
@@ -76,6 +76,7 @@
         android:layout_alignLeft="@+id/textView6"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView6"
+        android:gravity="top"
         android:layout_marginTop="16dp"
         android:background="@color/white"
         android:inputType="textMultiLine"
@@ -83,10 +84,11 @@
 
     <Button
         android:id="@+id/content_ok_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120sp"
+        android:layout_height="40sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/button_selector"
         android:text="@string/completed" />
     
 </RelativeLayout>
