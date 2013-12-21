@@ -1,18 +1,18 @@
 package com.hitiread.entity;
 
-public class Classify
+public class Tag
 {
 	private int id;
 	private String tag;
 	private long num;
 	
-	public Classify(int ids, String t, long total)
+	public Tag(int ids, String t, long total)
 	{
 		this.id = ids;
 		this.tag = t;
 		this.num = total;
 	}
-	public Classify(String t, long total)
+	public Tag(String t, long total)
 	{
 		this.tag = t;
 		this.num = total;

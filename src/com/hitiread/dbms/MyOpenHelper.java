@@ -26,7 +26,8 @@ public class MyOpenHelper extends SQLiteOpenHelper
 				+ "_id INTEGER PRIMARY KEY autoincrement," + "title text,"
 				+ "author text," + "publisher text," + "publishdate text,"
 				+ "summary text," + "pages text," + "lastread text,"
-				+ "progress text," + "isbn text," + "recent text)");
+				+ "progress text," + "isbn text," + "recent text,"
+				+ "times long, tag text)");
 		// table read note
 		db.execSQL("create table readnote("
 				+ "_id INTEGER PRIMARY KEY autoincrement," + "bookid integer,"
@@ -34,9 +35,9 @@ public class MyOpenHelper extends SQLiteOpenHelper
 				+ "endtime text," + "startpage text," + "endpage text,"
 				+ "share integer)");
 		// table classify
-		// db.execSQL("create table classify("
-		// + "_id INTEGER PRIMARY KEY autoincrement,"
-		// + "classifytag text," + "num long)");
+		db.execSQL("create table classify("
+				+ "_id INTEGER PRIMARY KEY autoincrement,"
+				+ "tag vchar(50)," + "num long)");
 
 	}
 

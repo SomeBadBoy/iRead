@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Time">
+        <item >一个月内</item>
+        <item >三个月内</item>
+        <item >半年内</item>
+        <item >一年内</item>
+        <item >三年内</item>
+        <item />
+    </string-array>
+    
+</resources>

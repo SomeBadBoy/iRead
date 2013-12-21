@@ -10,7 +10,7 @@
     <string name="search_hint">请输入书名</string>
     <string name="scan_add">添加书籍</string>
     <string name="classify">图书分类</string>
-	<string name="progress">查询进度</string>
+	<string name="progress">我的笔记</string>
     <string name="interest">兴趣分析</string>
     <string name="bookname">《书名》</string>
     <string name="endpage">结束页码</string>

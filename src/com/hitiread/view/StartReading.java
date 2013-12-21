@@ -1,38 +1,33 @@
 package com.hitiread.view;
 
-import java.text.SimpleDateFormat;
-
 import com.hitiread.dbms.MyDataBase;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class StartReading extends Activity
 {
 
-	private Button button,endbtn;
+	private Button button, endbtn;
 	private EditText editText;
-	private TextView readtime;
 	private ImageView image;
 	private MyDataBase myDataBase;
 	private int ids;
-	private boolean reading;
-	private String starttime,endtime,startpage;
+	private String starttime, endtime, startpage;
 	public final static int SECOND = 1;
-	private long timer = 0;
+	private Chronometer chronometer = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -40,132 +35,105 @@ public class StartReading extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reading_start);
 
-		button = (Button) findViewById(R.id.start_reading);
+		button = (Button) findViewById(R.id.startreading);
+		Log.v("start", "start");
 		endbtn = (Button) findViewById(R.id.endreading);
+		Log.v("start", "start");
 		editText = (EditText) findViewById(R.id.start_page);
+		Log.v("start", "start");
 		image = (ImageView) findViewById(R.id.imageView1);
-		readtime=(TextView)findViewById(R.id.readingtime);
-		myDataBase = new MyDataBase(this);
+		Log.v("start", "start");
+		chronometer = (Chronometer) findViewById(R.id.clock);
+		Log.v("start", "start");
+		chronometer.setFormat("%s");
+		myDataBase = new MyDataBase(StartReading.this);
 		endbtn.setEnabled(false);
 		Intent intent = getIntent();
 		ids = intent.getIntExtra("ids", 0);
-		String mappath=null;
-		if(ids != 0 )
+		String mappath = null;
+		if (ids != 0)
 		{
-			//必须先初始化progress表，否则为空
+			// 必须先初始化progress表，否则为空
 			Log.v("startreading", Integer.toString(ids));
-			startpage=myDataBase.getStartPageByBookId(ids);
-			mappath=myDataBase.getBitmap(ids);
+			startpage = myDataBase.getStartPageByBookId(ids);
+			mappath = myDataBase.getBitmap(ids);
 		}
-		Log.v("startreading", startpage.toString()+" "+mappath);
-		Bitmap bm=BitmapFactory.decodeFile(mappath);
+		Log.v("startreading", startpage.toString() + " " + mappath);
+		Bitmap bm = BitmapFactory.decodeFile(mappath);
 		image.setImageBitmap(bm);
-		if(startpage == "")
-			startpage="0";
+		if (startpage == "")
+			startpage = "0";
 		Log.v("startreading", startpage);
 		editText.setText(startpage);
 		button.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
 				startpage = editText.getText().toString();
-				if(startpage == null || startpage.equals(""))
+				if (startpage == null || startpage.equals(""))
 				{
 					editText.setError("请输入开始页码");
-					return ;
+					return;
 				}
 				String total = myDataBase.getTotalPageByBookId(ids);
 				int start = Integer.valueOf(startpage);
 				int totalpage = Integer.valueOf(total);
-				
-				if (start > totalpage) {
+
+				if (start > totalpage)
+				{
 					editText.setError("您已经把整本书读完啦");
-					return ;
+					return;
 				}
-				reading=true;
-				endbtn.setEnabled(true);				button.setEnabled(false);
+				chronometer.setBase(SystemClock.elapsedRealtime());
+				chronometer.start();
+				endbtn.setEnabled(true);
+				button.setEnabled(false);
 				editText.setEnabled(false);
 				long nowtime = System.currentTimeMillis();
-				CharSequence nowtimeSequence = DateFormat.format("HH:mm:ss", nowtime);
+				CharSequence nowtimeSequence = DateFormat.format(
+						"yyyy-MM-dd HH:mm:ss", nowtime);
 				starttime = nowtimeSequence.toString();
-				new TimeThread().start();				
+				Log.v("time", starttime);
+
 			}
 		});
 		endbtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0)
 			{
 				// TODO Auto-generated method stub
-				reading=false;
+				chronometer.stop();
 				long time = System.currentTimeMillis();
-				CharSequence endstr = DateFormat.format("HH:mm:ss", time);
+				CharSequence endstr = DateFormat.format("yyyy-MM-dd HH:mm:ss",
+						time);
 				endtime = endstr.toString();
-				//需要传3个参数：开始时间，结束时间，阅读开始页码
+				// 需要传3个参数：开始时间，结束时间，阅读开始页码
 				Intent endIntent = new Intent();
 				startpage = editText.getText().toString();
 				endIntent.putExtra("starttime", starttime);
 				endIntent.putExtra("startpage", startpage);
 				endIntent.putExtra("endtime", endtime);
 				endIntent.putExtra("bookid", ids);
+				Log.v("endreading", "end");
 				endIntent.setClass(getApplicationContext(), EndReading.class);
 				startActivity(endIntent);
 				StartReading.this.finish();
 			}
 		});
 	}
-	
+
 	@Override
 	public void onBackPressed()
 	{
 		// TODO Auto-generated method stub
-		//super.onBackPressed();
+		// super.onBackPressed();
 		Intent mainIntent = new Intent();
 		mainIntent.setClass(getApplicationContext(), MainActivity.class);
 		startActivity(mainIntent);
 		finish();
 	}
 
-	public class TimeThread extends Thread
-	{
-
-		@Override
-		public void run()
-		{
-			do{
-				try
-				{
-					Thread.sleep(1000);
-					Message msg=new Message();
-					msg.what=SECOND;
-					timer+=1000;
-					handler.sendMessage(msg);
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			} while (reading);
-		}	
-	}
-	@SuppressLint("HandlerLeak")
-	private Handler handler = new Handler()
-	{
-
-		@Override
-		public void handleMessage(Message msg)
-		{
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case SECOND:
-				readtime.setText(new SimpleDateFormat("HH:mm:ss").format(timer));
-				break;
-			
-			default:
-				break;
-			}
-		}
-
-	};
 }

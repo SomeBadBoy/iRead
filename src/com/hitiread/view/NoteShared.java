@@ -11,6 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+ * 阅读记录分享界面，显示阅读记录；
+ * 分享能够通过已安装的客户端分享到SNS；
+ */
+
 public class NoteShared extends Activity
 {
 	private Button sharebtn = null;
@@ -44,15 +49,12 @@ public class NoteShared extends Activity
 		public void onClick(View v)
 		{
 			// TODO Auto-generated method stub
-			Button btn = (Button)v;
-			switch (btn.getId()) {
-			case R.id.noteviewbtn1:
-				Toast.makeText(getApplicationContext(), "您点击了分享按钮", Toast.LENGTH_LONG).show();
-				break;
-
-			default:
-				break;
-			}
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("text/plain");
+			intent.putExtra(Intent.EXTRA_SUBJECT, note.getTitle());
+			intent.putExtra(Intent.EXTRA_TEXT, note.getContent());
+			Intent choose = Intent.createChooser(intent, "分享我的笔记");
+			startActivity(choose);
 		}
 	};
 	

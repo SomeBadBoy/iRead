@@ -11,19 +11,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.hitiread.entity.BookInfo;
+import com.hitiread.view.BookView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class Util {
+	public static JSONArray array;
 	   public static String Download(String urlstr)
 	   {
 	       String result="";
 	       try{
 	           URL url=new URL(urlstr);
 	           URLConnection connection =url.openConnection();
-	           Log.v("download", "times");
 	           String line;
 	           BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 	           while ((line = in.readLine()) != null) {
@@ -32,6 +33,7 @@ public class Util {
 	       }catch (Exception e) {
 	           e.printStackTrace();
 	       }
+	       Log.v("bookinfo", result);
 	       return  result;
 	   }
 
@@ -48,6 +50,7 @@ public class Util {
 	            info.setISBN(mess.getString("isbn13"));
 	            info.setSummary(mess.getString("summary"));
 	            info.setPages(mess.getString("pages"));
+	            array = mess.getJSONArray("tags");
 
 	        }catch (Exception e) {
 	            e.printStackTrace();

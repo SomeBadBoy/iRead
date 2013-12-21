@@ -68,10 +68,7 @@ public class ScanAdd extends Activity
 	public void onBackPressed()
 	{
 		// TODO Auto-generated method stub
-		//super.onBackPressed();
-		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-		startActivity(intent);
-		finish();
+		super.onBackPressed();
 	}
 
 }

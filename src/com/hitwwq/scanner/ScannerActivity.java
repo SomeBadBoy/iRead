@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.covics.zxingscanner.OnDecodeCompletionListener;
 import com.covics.zxingscanner.ScannerView;
@@ -30,7 +31,7 @@ public class ScannerActivity extends Activity implements OnDecodeCompletionListe
 		Intent intent=new Intent();
 		intent.putExtra("ISBN", barcode);
 		setResult(RESULT_CODE, intent);
-		finish();
+		ScannerActivity.this.finish();
 	}
 
 	@Override

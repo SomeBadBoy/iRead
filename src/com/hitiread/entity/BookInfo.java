@@ -2,6 +2,7 @@ package com.hitiread.entity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;
@@ -28,12 +29,13 @@ public class BookInfo implements Parcelable
 	private String progress;
 	private int ids;
 	private String tag;
+	private long times;
 	private String recent;
-
+	private String readtime;
 
 	public BookInfo(String title, String author, String publisher,
 			String publishdate, String isbn, String summary, 
-			String pages, String last, String prog, String rec)
+			String pages, String last, String prog, String rec,long tms,String rt)
 	{
 		mTitle = title;
 		mAuthor = author;
@@ -45,11 +47,13 @@ public class BookInfo implements Parcelable
 		lastread = last;
 		progress = prog;
 		recent = rec;
+		times = tms;
+		readtime = rt;
 	}
 
 	public BookInfo(int id, String title, String author, String publisher,
 			String publishdate, String isbn, String summary, String pages,
-			String last, String prog, String rec)
+			String last, String prog, String rec, long readtimes, String tag)
 	{
 		ids = id;
 		mTitle = title;
@@ -62,6 +66,8 @@ public class BookInfo implements Parcelable
 		lastread = last;
 		progress = prog;
 		recent = rec;
+		this.times = readtimes;
+		this.tag = tag;
 	}
 
 	public BookInfo()
@@ -69,6 +75,22 @@ public class BookInfo implements Parcelable
 		// TODO Auto-generated constructor stub
 	}
 
+	public void setReadTime(String read)
+	{
+		this.readtime = read;
+	}
+	public String getReadTime()
+	{
+		return readtime;
+	}
+	public long getTimes()
+	{
+		return times;
+	}
+	public void setTimes(long readtimes)
+	{
+		this.times = readtimes;
+	}
 	public String getTag()
 	{
 		return tag;
@@ -201,8 +223,10 @@ public class BookInfo implements Parcelable
 			bookInfo.mPages = source.readString();
 			bookInfo.lastread = "0";
 			bookInfo.progress = "0";
-			SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
+			SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss",Locale.CHINA);
+			Log.v("bookinfo", "date"+date.toString());
 			bookInfo.recent = date.format(new Date(System.currentTimeMillis()));
+			bookInfo.times = 0;
 			Log.v("bookinfo", bookInfo.recent);
 			return bookInfo;
 		}

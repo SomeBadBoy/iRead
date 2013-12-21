@@ -5,13 +5,17 @@ import com.hitiread.entity.ReadNote;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class EndReading extends Activity
 {
@@ -21,6 +25,8 @@ public class EndReading extends Activity
 	private Button okbtn;
 	private int bookid;
 	private MyDataBase myDataBase;
+	private SharedPreferences mSharedPreferences;
+	private TextView tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +35,7 @@ public class EndReading extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reading_end);
 
+		myDataBase = new MyDataBase(getApplicationContext());
 		Intent intent = getIntent();
 		starttime = intent.getExtras().getString("starttime");
 		endtime = intent.getExtras().getString("endtime");
@@ -39,7 +46,8 @@ public class EndReading extends Activity
 		endpage = (EditText) findViewById(R.id.end_page);
 		note = (EditText) findViewById(R.id.note_content);
 		okbtn = (Button) findViewById(R.id.content_ok_btn);
-
+		tv = (TextView) findViewById(R.id.endreading_bookname);
+		tv.setText(myDataBase.toFindBookNameByID(bookid));
 		okbtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -62,6 +70,7 @@ public class EndReading extends Activity
 				}
 				
 				Log.v("endreading", "endpage"+endpage.getText().toString());
+				Log.v("endtime", endtime);
 				ReadNote readnote = new ReadNote(bookid, starttime, endtime,startpage,
 						endpage.getText().toString(),title.getText().toString(), note.getText().toString(), 0);
 				myDataBase.toInsert(readnote);
@@ -74,6 +83,15 @@ public class EndReading extends Activity
 				Log.v("endreading", String.valueOf(prog));
 				myDataBase.toUpdateProgressWihtEndPage(bookid, endpage.getText().toString(), String.valueOf(prog));
 				myDataBase.toUpdateRecentByBookId(bookid, endtime);
+				
+				mSharedPreferences = getSharedPreferences("ReadRemind",Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = mSharedPreferences.edit();
+				editor.putBoolean("flag", true);
+				editor.putInt("id", bookid);
+				editor.putString("name", myDataBase.toFindBookNameByID(bookid));
+				editor.putFloat("progress", (float)(prog));
+				editor.commit();
+				
 				Intent aIntent = new Intent();
 				aIntent.setClass(getApplicationContext(), MainActivity.class);
 				startActivity(aIntent);

@@ -3,11 +3,20 @@ package com.hitiread.view;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.hitiread.view.R;
 import com.hitiread.dbms.MyDataBase;
 import com.hitiread.entity.BookInfo;
+import com.hitiread.entity.Tag;
+import com.hitwwq.scanner.Util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,6 +34,8 @@ import android.widget.Toast;
 
 /**
  * Created by wwq on 13-7-10.
+ * 展示图书信息界面，能够添加图书，并选择分类；
+ * 并能够保存图书的封面图片；
  */
 public class BookView extends Activity
 {
@@ -34,7 +45,9 @@ public class BookView extends Activity
 	private Button btn;
 	private MyDataBase myDataBase;
 	private BookInfo book;
-//	private ArrayList<Classify> classify;
+// private ArrayList<Classify> classify;
+	private String[] tag;
+	private String choice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -64,7 +77,8 @@ public class BookView extends Activity
 		summary.setText(book.getSummary());
 		cover.setImageBitmap(book.getBitmap());
 		btn = (Button) findViewById(R.id.bookview);
-
+		// InitClassify();
+		getTagArray();
 		btn.setOnClickListener(listener);
 	}
 
@@ -74,10 +88,62 @@ public class BookView extends Activity
 		public void onClick(View v)
 		{
 			// TODO Auto-generated method stub
-			myDataBase.toInsert(book);
-/*			new AlertDialog.Builder(BookView.this)
-			.setTitle("添加到分类")
-			.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			if (tag.length == 0)
+			{
+				choice = "无分类";
+			}
+			else {
+				choice = tag[0];
+			}
+			AlertDialog.Builder builder = new AlertDialog.Builder(BookView.this);
+			builder.setTitle("选择分类");
+			builder.setSingleChoiceItems(tag, 0, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					// TODO Auto-generated method stub
+					choice = tag[which];
+					Log.v("tag", "which="+which);
+					Log.v("tag", "choice="+choice);
+					Log.v("tag", "tag="+tag[which]);
+					Log.v("num", "tagnum="+myDataBase.toFindTagNameByName("choice"));
+				}
+			});
+			builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					// TODO Auto-generated method stub
+					Log.v("bookview", choice);
+					//need to find if it exits tag named tag[choice]
+					//if it exits the number must increase;
+					//or it need to create a new column;
+					long num = 0;
+					num = myDataBase.toFindTagNameByName(choice);
+					Log.v("num", "num="+num);
+					if (num == 0)
+					{
+						Tag t = new Tag(choice, num);
+						myDataBase.toInsert(t);
+						Log.v("tag", choice);
+					}
+					myDataBase.toUpdateNumberByTagName(choice, num+1);
+					book.setTag(choice);
+					book.setTimes(0);
+					Log.v("book", book.getTitle()+book.getTag()+book.getSummary());
+					myDataBase.toInsert(book);
+					saveBitmap(book);
+					Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_LONG)
+							.show();
+					Intent intent = new Intent();
+					intent.setClass(getApplicationContext(), MainActivity.class);
+					startActivity(intent);
+					BookView.this.finish();
+				}
+			});
+			builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which)
@@ -85,42 +151,16 @@ public class BookView extends Activity
 					// TODO Auto-generated method stub
 					
 				}
-			})
-			.setNeutralButton("新建分类", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					// TODO Auto-generated method stub
-					
-				}
-			})
-			.setItems(1,new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					// TODO Auto-generated method stub
-					
-				}
-			})
-			.show();
-*/
-			Log.v("bookview", "Onclick");
-			saveBitmap(book);
-			Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_LONG)
-					.show();
-			Intent intent = new Intent();
-			intent.setClass(getApplicationContext(), MainActivity.class);
-			startActivity(intent);
-			BookView.this.finish();
+			});
+			builder.create().show();
+			return;
 		}
 	};
-	
+
 	public void onBackPressed()
 	{
 		// TODO Auto-generated method stub
-		//super.onBackPressed();
+		// super.onBackPressed();
 		Intent anotherIntent = new Intent();
 		anotherIntent.setClass(getApplicationContext(), MainActivity.class);
 		startActivity(anotherIntent);
@@ -176,5 +216,23 @@ public class BookView extends Activity
 			sdPath = Environment.getExternalStorageDirectory();// 获取跟目录
 		}
 		return sdPath.toString() + "/";
+	}
+
+	public void getTagArray()
+	{
+		tag = new String[Util.array.length()];
+		for (int i = 0; i < Util.array.length(); i++)
+		{
+			try
+			{
+				JSONObject object = Util.array.getJSONObject(i);
+				tag[i] = object.getString("name");
+			} catch (JSONException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 	}
 }

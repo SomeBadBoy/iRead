@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/back"
     android:layout_height="match_parent" >
     
     <TextView
@@ -15,7 +14,6 @@
         android:paddingLeft="10dp"
         android:text="标题" 
         android:textSize="20sp"
-        android:background="@drawable/textview_selector"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -25,7 +23,6 @@
         android:layout_alignBaseline="@+id/textView1"
         android:layout_alignParentRight="true"
         android:paddingRight="10dp"
-        android:background="@drawable/textview_selector"
         android:text="45%" 
         android:textSize="20sp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
